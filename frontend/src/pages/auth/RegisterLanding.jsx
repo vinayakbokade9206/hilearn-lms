@@ -114,7 +114,7 @@ const RegisterLanding = () => {
 
             <p className="mt-6 text-sm text-slate-500 text-center">
               Already have an account?{" "}
-              <Link to="/" className="text-blue-600 font-semibold hover:underline">
+              <Link to="/login" className="text-blue-600 font-semibold hover:underline">
                 Login
               </Link>
             </p>
