@@ -1,12 +1,13 @@
 import api from "./api";
 
 /* STUDENTS */
-export const getStudents = () => api.get("/admin/students");
-export const addStudent = (data) => api.post("/admin/students", data);
-export const updateStudent = (id, data) => api.put(`/admin/students/${id}`, data);
-export const deleteStudent = (id) => api.delete(`/admin/students/${id}`);
+export const getStudents = () => api.get("/students");
+export const addStudent = (data) => api.post("/students", data);
+export const updateStudent = (id, data) =>
+  api.put(`/students/${id}`, data);
+export const deleteStudent = (id) => api.delete(`/students/${id}`);
 export const toggleStudentStatus = (id) =>
-  api.patch(`/admin/students/${id}/status`);
+  api.patch(`/students/${id}/status`);
 
 /* COURSES */
 export const getCourses = () => api.get("/admin/courses");

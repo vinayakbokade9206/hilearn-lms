@@ -16,6 +16,7 @@ import StudentList from "./pages/dashboard/admin/sudents/StudentList";
 import CourseList from "./pages/dashboard/admin/courses/CourseList";
 import LectureList from "./pages/dashboard/admin/lectures/LectureList";
 import BatchList from "./pages/dashboard/admin/batches/BatchList";
+import AddEditStudent from "./pages/dashboard/admin/sudents/AddEditStudent";
 
 function App() {
   return (
@@ -36,6 +37,8 @@ function App() {
         <Route path="/mentor" element={<MentorDashboard />} />
         <Route path="/admin" element={<AdminLayout />}>
             <Route path="students" element={<StudentList />} />
+            <Route path="students/add" element={<AddEditStudent />} />
+            <Route path="students/edit/:id" element={<AddEditStudent />} />
             <Route path="courses" element={<CourseList />} />
             <Route path="lectures" element={<LectureList />} />
             <Route path="batches" element={<BatchList />} />

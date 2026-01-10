@@ -9,6 +9,7 @@ const RegisterForm = () => {
     name: "",
     email: "",
     password: "",
+    mobile: "",
     role: "student",
   });
 

@@ -8,5 +8,6 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes.js"));
+app.use("/api/students", require("./routes/studentRoutes.js"));
 
 module.exports = app;

@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    
     password: {
       type: String,
       required: true,
@@ -25,6 +26,13 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpire: Date,
    otp: String,
    otpExpire: Date,
+   isActive: {
+  type: Boolean,
+  default: true,
+  },
+  mobile: {
+  type: String,
+},
   },
   
   { timestamps: true }
