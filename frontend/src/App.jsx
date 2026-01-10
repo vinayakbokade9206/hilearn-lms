@@ -11,6 +11,11 @@ import StudentDashboard from "./pages/dashboard/StudentDashboard";
 import MentorDashboard from "./pages/dashboard/MentorDashboard";
 import AdminDashboard from "./pages/dashboard/MentorDashboard";
 import VerifyOtp from "./pages/auth/VerifyOtp";
+import AdminLayout from "./pages/dashboard/admin/AdminLayout";
+import StudentList from "./pages/dashboard/admin/sudents/StudentList";
+import CourseList from "./pages/dashboard/admin/courses/CourseList";
+import LectureList from "./pages/dashboard/admin/lectures/LectureList";
+import BatchList from "./pages/dashboard/admin/batches/BatchList";
 
 function App() {
   return (
@@ -29,7 +34,12 @@ function App() {
         {/* Dashboard Routes (role-based) */}
         <Route path="/student" element={<StudentDashboard/>} />
         <Route path="/mentor" element={<MentorDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminLayout />}>
+            <Route path="students" element={<StudentList />} />
+            <Route path="courses" element={<CourseList />} />
+            <Route path="lectures" element={<LectureList />} />
+            <Route path="batches" element={<BatchList />} />
+        </Route>
       </Routes>
     </Router>
   );
