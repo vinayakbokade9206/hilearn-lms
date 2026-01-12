@@ -61,6 +61,7 @@ import VerifyOtp from "./pages/auth/VerifyOtp";
 
 import StudentDashboard from "./pages/dashboard/StudentDashboard";
 import MentorDashboard from "./pages/dashboard/MentorDashboard";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
 
 import AdminLayout from "./pages/dashboard/admin/AdminLayout";
 
@@ -86,6 +87,7 @@ function App() {
 
         {/* Dashboards */}
         <Route path="/student" element={<StudentDashboard />} />
+        
         <Route path="/mentor" element={<MentorDashboard />} />
 
         {/* Admin Dashboard with Nested Routes */}
@@ -97,6 +99,7 @@ function App() {
             <Route path="lectures" element={<LectureList />} />
             <Route path="batches" element={<BatchList />} />
           <Route path="students" element={<StudentList />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
           {/* <Route path="courses" element={<AddEditCourses />} /> */}
           <Route path="courses" element={<CourseList />} />
           <Route path="lectures" element={<LectureList />} />
