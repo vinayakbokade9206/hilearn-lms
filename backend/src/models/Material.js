@@ -1,31 +1,22 @@
 const mongoose = require("mongoose");
 
-const materialSchema = new mongoose.Schema(
-  {
-    lecture: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Lecture",
-      required: true,
-    },
-
-    title: {
-      type: String,
-      required: true,
-    },
-
-    type: {
-      type: String,
-      enum: ["notes", "quiz", "interview"],
-      required: true,
-    },
-
-    fileUrl: {
-      type: String,
-    },
-
-    description: String,
+const materialSchema = new mongoose.Schema({
+  lecture: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Lecture",
+    required: true,
   },
-  { timestamps: true }
-);
+  title: String,
+  type: {
+    type: String,
+    enum: ["notes", "quiz", "interview"],
+    required: true,
+  },
+  fileUrl: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 module.exports = mongoose.model("Material", materialSchema);
