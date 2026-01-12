@@ -1,37 +1,23 @@
 const Material = require("../models/Material");
 
-/**
- * Add material to lecture
- */
-exports.createMaterial = async (req, res) => {
+exports.uploadMaterial = async (req, res) => {
   try {
-    const material = await Material.create(req.body);
+    const { lectureId, type, title } = req.body;
+
+    const material = await Material.create({
+      lecture: lectureId,
+      type,
+      title,
+      fileUrl: `/uploads/materials/${req.file.filename}`,
+    });
+
     res.json({ success: true, material });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 };
 
-/**
- * Get materials of a lecture
- */
-exports.getLectureMaterials = async (req, res) => {
-  try {
-    const materials = await Material.find({ lecture: req.params.lectureId });
-    res.json({ success: true, materials });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-};
-
-/**
- * Delete material
- */
-exports.deleteMaterial = async (req, res) => {
-  try {
-    await Material.findByIdAndDelete(req.params.id);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+exports.getMaterialsByLecture = async (req, res) => {
+  const materials = await Material.find({ lecture: req.params.lectureId });
+  res.json({ success: true, materials });
 };

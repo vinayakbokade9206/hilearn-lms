@@ -1,14 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../utils/upload");
+const controller = require("../controllers/materialController");
 
-const {
-  createMaterial,
-  getLectureMaterials,
-  deleteMaterial,
-} = require("../controllers/materialController");
-
-router.post("/", createMaterial);
-router.get("/lecture/:lectureId", getLectureMaterials);
-router.delete("/:id", deleteMaterial);
+router.post("/upload", upload.single("file"), controller.uploadMaterial);
+router.get("/:lectureId", controller.getMaterialsByLecture);
 
 module.exports = router;

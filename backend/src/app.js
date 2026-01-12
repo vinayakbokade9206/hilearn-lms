@@ -19,6 +19,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const Course = require("./models/Course"); // Ensure path is correct
 const courseRoutes = require("./routes/courseRoutes");
+const materialRoutes = require("./routes/materialRoutes");
 
 const app = express();
 
@@ -54,5 +55,12 @@ app.use("/api/admin/batches", require("./routes/batchRoutes"));
 app.use("/api/lectures", require("./routes/lectureRoutes.js"));
 app.use("/api/materials", require("./routes/materialRoutes"));
 app.use("/api/students", require("./routes/studentRoutes"));
+
+// app.use("/uploads", express.static("uploads"));
+// app.use("/api/materials", materialRoutes);
+
+app.use("/api/materials", materialRoutes);
+app.use("/uploads", express.static("uploads"));
+
 
 module.exports = app;
