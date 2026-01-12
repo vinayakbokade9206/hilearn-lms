@@ -46,10 +46,7 @@ mongoose.connection.once("open", seedData);
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes.js"));
-<<<<<<< HEAD
 app.use("/api/students", require("./routes/studentRoutes.js"));
-=======
 app.use("/api/courses", courseRoutes);
->>>>>>> feature/admin-courses
 
 module.exports = app;

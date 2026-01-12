@@ -65,15 +65,12 @@ import MentorDashboard from "./pages/dashboard/MentorDashboard";
 import AdminLayout from "./pages/dashboard/admin/AdminLayout";
 
 // Admin Pages
-import StudentList from "./pages/dashboard/admin/courses/CourseList";
+import StudentList from "./pages/dashboard/admin/students/StudentList";
 import AddEditCourses from "./pages/dashboard/admin/courses/AddEditCourse";
 import LectureList from "./pages/dashboard/admin/lectures/LectureList";
 import BatchList from "./pages/dashboard/admin/batches/BatchList";
-<<<<<<< HEAD
-import AddEditStudent from "./pages/dashboard/admin/sudents/AddEditStudent";
-=======
+import AddEditStudent from "./pages/dashboard/admin/students/AddEditStudent";
 import CourseList from "./pages/dashboard/admin/courses/CourseList";
->>>>>>> feature/admin-courses
 
 function App() {
   return (
@@ -93,20 +90,17 @@ function App() {
 
         {/* Admin Dashboard with Nested Routes */}
         <Route path="/admin" element={<AdminLayout />}>
-<<<<<<< HEAD
             <Route path="students" element={<StudentList />} />
             <Route path="students/add" element={<AddEditStudent />} />
             <Route path="students/edit/:id" element={<AddEditStudent />} />
             <Route path="courses" element={<CourseList />} />
             <Route path="lectures" element={<LectureList />} />
             <Route path="batches" element={<BatchList />} />
-=======
           <Route path="students" element={<StudentList />} />
           {/* <Route path="courses" element={<AddEditCourses />} /> */}
           <Route path="courses" element={<CourseList />} />
           <Route path="lectures" element={<LectureList />} />
           <Route path="batches" element={<BatchList />} />
->>>>>>> feature/admin-courses
         </Route>
       </Routes>
     </Router>
