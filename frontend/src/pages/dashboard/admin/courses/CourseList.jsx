@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BookOpen, Plus, X, IndianRupee, Clock, Tag, Edit3, Trash2, Search, Layout } from "lucide-react";
 import AddEditCourse from "./AddEditCourse";
 
 const API_URL = "http://localhost:5000/api/courses";
@@ -8,6 +9,7 @@ const CourseList = () => {
   const [editData, setEditData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchCourses = async () => {
     try {
@@ -39,31 +41,40 @@ const CourseList = () => {
     } catch (err) { alert("Delete failed"); }
   };
 
+  const filteredCourses = courses.filter(c =>
+    c.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="p-8 bg-[#F0F7FF] min-h-screen">
+    <div className="max-w-7xl mx-auto p-4 md:p-8 bg-slate-50 min-h-screen">
+
       {/* --- Dashboard Header --- */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 bg-white/80 backdrop-blur-md p-8 rounded-[2rem] shadow-xl shadow-blue-100/50 border border-white">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-800 tracking-tight">Course Management</h1>
-          <p className="text-blue-500 font-medium mt-1">Manage and organize your learning curriculum</p>
+          <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">Manage Courses</h1>
+          <p className="text-slate-500 font-medium">Create and organize your academic curriculum</p>
         </div>
-        
-        <button
-          onClick={() => {
-            setShowForm(!showForm);
-            if(showForm) setEditData(null);
-          }}
-          className={`mt-4 md:mt-0 px-8 py-3.5 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2 ${
-            showForm ? "bg-slate-800 text-white" : "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200"
-          }`}
-        >
-          {showForm ? "✕ Close Editor" : "＋ Add New Course"}
-        </button>
+
+        {!showForm ? (
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-95"
+          >
+            <Plus size={20} /> Add New Course
+          </button>
+        ) : (
+          <button
+            onClick={() => { setShowForm(false); setEditData(null); }}
+            className="flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-2xl font-bold transition-all"
+          >
+            <X size={20} /> Close Editor
+          </button>
+        )}
       </div>
 
-      {/* --- ADD/EDIT FORM (Slide Down Animation) --- */}
+      {/* --- ADD/EDIT FORM (Slide Down) --- */}
       {showForm && (
-        <div className="mb-12 animate-in fade-in slide-in-from-top-10 duration-500">
+        <div className="mb-10 animate-in fade-in slide-in-from-top-4 duration-300">
           <AddEditCourse
             onCoursesChange={() => { fetchCourses(); setShowForm(false); }}
             editData={editData}
@@ -72,64 +83,103 @@ const CourseList = () => {
         </div>
       )}
 
-      {/* --- COURSES GRID --- */}
-      <div className="flex items-center gap-4 mb-8">
-        <div className="h-1 w-12 bg-blue-600 rounded-full"></div>
-        <h2 className="text-xl font-bold text-slate-700">Explore Active Courses</h2>
+      {/* --- SEARCH & FILTER BAR --- */}
+      <div className="flex flex-col md:flex-row gap-4 mb-8 items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+        {/* Search Side */}
+        <div className="relative w-full md:w-96 flex items-center">
+          {/* Icon Wrapper for Perfect Centering */}
+          <div className="absolute left-3.5 flex items-center pointer-events-none">
+            <Search className="text-slate-400" size={18} />
+          </div>
+
+          <input
+            type="text"
+            placeholder="Search courses..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/5 transition-all text-sm text-slate-700 placeholder:text-slate-400"
+          />
+        </div>
+
+        {/* Stats Side */}
+        <div className="hidden md:flex items-center gap-2.5 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
+          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
+          <span className="text-slate-500 font-bold text-[10px] uppercase tracking-[0.15em]">
+            Total: {filteredCourses.length} Courses
+          </span>
+        </div>
       </div>
 
+      {/* --- COURSES GRID (LectureList Style) --- */}
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="relative w-16 h-16">
-            <div className="absolute top-0 left-0 w-full h-full border-4 border-blue-100 rounded-full"></div>
-            <div className="absolute top-0 left-0 w-full h-full border-4 border-blue-600 rounded-full animate-spin border-t-transparent"></div>
-          </div>
+        <div className="flex justify-center py-20">
+          <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {courses.map((course) => (
-            <div key={course._id} className="group bg-white rounded-[2.5rem] p-7 shadow-xl shadow-slate-200/60 border border-slate-100 hover:border-blue-200 transition-all duration-300 hover:-translate-y-2">
-              <div className="flex justify-between items-start mb-6">
-                <span className="bg-blue-50 text-blue-600 text-[11px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest border border-blue-100">
-                  {course.category || "General"}
-                </span>
-                <div className="text-2xl font-black text-slate-800 tracking-tighter">₹{course.price}</div>
-              </div>
-              
-              <h3 className="text-xl font-extrabold text-slate-800 mb-3 group-hover:text-blue-600 transition-colors">
-                {course.title}
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-8 line-clamp-2">
-                {course.description}
-              </p>
-              
-              <div className="flex justify-between items-center bg-slate-50 p-4 rounded-2xl mb-6">
-                <div className="flex items-center gap-2">
-                    <span className="text-blue-500 text-lg">⏱</span>
-                    <span className="text-slate-600 font-bold text-xs">{course.duration}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCourses.map((course) => (
+            <div
+              key={course._id}
+              className="bg-white rounded-[1.5rem] border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden flex flex-col"
+            >
+              {/* Card Header */}
+              <div className="p-5 pb-0 flex justify-between items-start">
+                <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full">
+                  <Tag size={12} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider">
+                    {course.category || "General"}
+                  </span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    <span className="text-green-600 font-black text-[10px] uppercase">Live</span>
+                <div className="flex items-center gap-1 text-slate-800 font-black text-sm">
+                  <IndianRupee size={14} /> {course.price}
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <button 
+              {/* Card Content */}
+              <div className="p-5 flex-grow">
+                <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                  {course.title}
+                </h3>
+                <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed">
+                  {course.description || "No description provided."}
+                </p>
+
+                <div className="mt-4 flex items-center gap-4">
+                  <div className="flex items-center gap-1.5 text-slate-400 text-xs font-semibold">
+                    <Clock size={14} className="text-blue-500" /> {course.duration}
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span className="text-green-600 font-bold text-[10px] uppercase">Active</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Actions (Same as LectureList) */}
+              <div className="px-5 py-4 bg-slate-50 flex gap-3">
+                <button
                   onClick={() => handleEdit(course)}
-                  className="flex-1 bg-white border-2 border-slate-100 text-slate-700 hover:border-blue-600 hover:text-blue-600 py-3 rounded-2xl font-bold text-sm transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-all shadow-sm"
                 >
-                  Edit Details
+                  <Edit3 size={14} /> Edit
                 </button>
-                <button 
+                <button
                   onClick={() => deleteCourse(course._id)}
-                  className="px-4 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white py-3 rounded-2xl font-bold text-sm transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white border border-slate-200 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-50 hover:border-rose-200 transition-all shadow-sm"
                 >
-                  Delete
+                  <Trash2 size={14} /> Delete
                 </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!loading && filteredCourses.length === 0 && (
+        <div className="col-span-full py-20 bg-white rounded-[2rem] border border-dashed border-slate-200 flex flex-col items-center">
+          <BookOpen className="text-slate-200 mb-4" size={48} />
+          <p className="text-slate-500 font-medium">No courses found matching your criteria.</p>
         </div>
       )}
     </div>
