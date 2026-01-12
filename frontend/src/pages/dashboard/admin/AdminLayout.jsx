@@ -19,7 +19,7 @@ const AdminLayout = () => {
   const menu = [
     {
       name: "Dashboard",
-      path: "/admin",
+      path: "/admin/dashboard",
       icon: <LayoutDashboard size={20} />,
     },
     {

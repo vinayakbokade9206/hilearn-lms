@@ -10,7 +10,7 @@ export const toggleStudentStatus = (id) =>
   api.patch(`/students/${id}/status`);
 
 /* COURSES */
-export const getCourses = () => api.get("/admin/courses");
+export const getCourses = () => api.get("/courses");
 export const addCourse = (data) => api.post("/admin/courses", data);
 
 /* LECTURES */
@@ -18,7 +18,13 @@ export const getLectures = () => api.get("/admin/lectures");
 
 /* BATCHES */
 export const getBatches = () => api.get("/admin/batches");
-
+export const addBatch = (data) => api.post("/admin/batches", data);
+export const updateBatch = (id, data) =>
+  api.put(`/admin/batches/${id}`, data);
+export const deleteBatch = (id) =>
+  api.delete(`/admin/batches/${id}`);
+export const toggleBatchStatus = (id) =>
+  api.patch(`/admin/batches/${id}/status`);
 
 
 export const getAdminProfile = async () => {
