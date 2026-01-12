@@ -61,7 +61,7 @@ import VerifyOtp from "./pages/auth/VerifyOtp";
 
 import StudentDashboard from "./pages/dashboard/StudentDashboard";
 import MentorDashboard from "./pages/dashboard/MentorDashboard";
-import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import AdminDashboard from "./pages/dashboard/admin/AdminDashboard";
 
 import AdminLayout from "./pages/dashboard/admin/AdminLayout";
 
@@ -72,6 +72,7 @@ import LectureList from "./pages/dashboard/admin/lectures/LectureList";
 import BatchList from "./pages/dashboard/admin/batches/BatchList";
 import AddEditStudent from "./pages/dashboard/admin/students/AddEditStudent";
 import CourseList from "./pages/dashboard/admin/courses/CourseList";
+import StudentDetails from "./pages/dashboard/admin/students/StudentDetails";
 
 function App() {
   return (
@@ -95,6 +96,7 @@ function App() {
             <Route path="students" element={<StudentList />} />
             <Route path="students/add" element={<AddEditStudent />} />
             <Route path="students/edit/:id" element={<AddEditStudent />} />
+            <Route path="/admin/students/:id" element={<StudentDetails />} />
             <Route path="courses" element={<CourseList />} />
             <Route path="lectures" element={<LectureList />} />
             <Route path="batches" element={<BatchList />} />

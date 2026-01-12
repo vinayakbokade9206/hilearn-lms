@@ -226,6 +226,14 @@ const StudentList = () => {
                                         >
                                             Delete
                                         </button>
+                                        <button
+                    onClick={() =>
+                      navigate(`/admin/students/${student._id}`)
+                    }
+                    className="text-blue-600 font-medium hover:underline"
+                  >
+                    View
+                  </button>
                                     </td>
                                 </tr>
                             ))}

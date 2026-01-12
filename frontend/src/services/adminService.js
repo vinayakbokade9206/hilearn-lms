@@ -9,6 +9,16 @@ export const deleteStudent = (id) => api.delete(`/students/${id}`);
 export const toggleStudentStatus = (id) =>
   api.patch(`/students/${id}/status`);
 
+
+export const getStudentDetails = (id) =>
+  api.get(`/students/${id}`);
+
+export const getStudentAttendance = (id) =>
+  api.get(`/admin/students/${id}/attendance`);
+
+export const getStudentQuizzes = (id) =>
+  api.get(`/admin/students/${id}/quizzes`);
+
 /* COURSES */
 export const getCourses = () => api.get("/courses");
 export const addCourse = (data) => api.post("/admin/courses", data);

@@ -53,6 +53,6 @@ app.use("/api/admin/batches", require("./routes/batchRoutes"));
 
 app.use("/api/lectures", require("./routes/lectureRoutes.js"));
 app.use("/api/materials", require("./routes/materialRoutes"));
-
+app.use("/api/students", require("./routes/studentRoutes"));
 
 module.exports = app;
