@@ -1,147 +1,3 @@
-// import { useEffect, useState } from "react";
-// import {
-//   getBatches,
-//   addBatch,
-//   deleteBatch,
-//   toggleBatchStatus,
-//   getCourses,
-// } from "../../../../services/adminService";
-
-// const BatchList = () => {
-//   const [batches, setBatches] = useState([]);
-//   const [courses, setCourses] = useState([]);
-
-//   const [name, setName] = useState("");
-//   const [course, setCourse] = useState("");
-
-//   const loadBatches = async () => {
-//     const res = await getBatches();
-//     setBatches(res.data);
-//   };
-
-//   const loadCourses = async () => {
-//     const res = await getCourses();
-//     setCourses(res.data.courses); // 🔥 IMPORTANT
-//   };
-
-//   useEffect(() => {
-//     loadBatches();
-//     loadCourses();
-//   }, []);
-
-//   const handleAdd = async (e) => {
-//     e.preventDefault();
-
-//     await addBatch({
-//       name,
-//       course, // 🔥 REQUIRED FIELD
-//     });
-
-//     setName("");
-//     setCourse("");
-//     loadBatches();
-//   };
-
-//   return (
-//     <div>
-//       <h1 className="text-2xl font-bold text-blue-700 mb-6">
-//         Manage Batches
-//       </h1>
-
-//       {/* ADD */}
-//       <form onSubmit={handleAdd} className="flex gap-4 mb-6">
-//         <input
-//           value={name}
-//           onChange={(e) => setName(e.target.value)}
-//           placeholder="Batch Name"
-//           className="border p-3 rounded w-64"
-//           required
-//         />
-
-//         <select
-//           value={course}
-//           onChange={(e) => setCourse(e.target.value)}
-//           className="border p-3 rounded w-64"
-//           required
-//         >
-//           <option value="">Select Course</option>
-//           {courses.map((c) => (
-//             <option key={c._id} value={c._id}>
-//               {c.title}
-//             </option>
-//           ))}
-//         </select>
-
-//         <button className="bg-blue-600 text-white px-6 rounded">
-//           Add Batch
-//         </button>
-//       </form>
-
-//       {/* LIST */}
-//       <div className="bg-white rounded-xl shadow">
-//         <table className="w-full text-sm">
-//           <thead className="bg-blue-600 text-white">
-//             <tr>
-//               <th className="p-3 text-left">Batch Name</th>
-//               <th>Status</th>
-//               <th className="text-center">Actions</th>
-//             </tr>
-//           </thead>
-
-//           <tbody>
-//             {batches.map((batch) => (
-//               <tr key={batch._id} className="border-t">
-//                 <td className="p-3">{batch.name}</td>
-
-//                 <td>
-//                   <span
-//                     className={`px-3 py-1 rounded-full text-xs font-semibold ${
-//                       batch.isActive
-//                         ? "bg-green-100 text-green-700"
-//                         : "bg-red-100 text-red-700"
-//                     }`}
-//                   >
-//                     {batch.isActive ? "Active" : "Inactive"}
-//                   </span>
-//                 </td>
-
-//                 <td className="flex gap-3 justify-center py-3">
-//                   <button
-//                     onClick={() =>
-//                       toggleBatchStatus(batch._id).then(loadBatches)
-//                     }
-//                     className="text-blue-600"
-//                   >
-//                     Toggle
-//                   </button>
-
-//                   <button
-//                     onClick={() =>
-//                       deleteBatch(batch._id).then(loadBatches)
-//                     }
-//                     className="text-red-600"
-//                   >
-//                     Delete
-//                   </button>
-//                 </td>
-//               </tr>
-//             ))}
-
-//             {batches.length === 0 && (
-//               <tr>
-//                 <td colSpan="3" className="text-center p-6 text-gray-500">
-//                   No batches found
-//                 </td>
-//               </tr>
-//             )}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BatchList;
 import { useEffect, useState } from "react";
 import {
   getBatches,
@@ -192,34 +48,14 @@ const BatchList = () => {
     setEditBatch(null);
     loadBatches();
   };
-  //   const handleToggleStatus = async (batches) => {
-  //   // instant UI update
-  //   setBatches((prev) =>
-  //     prev.map((b) =>
-  //       b._id === batches._id ? { ...b, isActive: !b.isActive } : b
-  //     )
-  //   );
-
-  //   try {
-  //     await toggleBatchStatus(batches._id);
-  //   } catch (err) {
-  //     alert("Failed to update status");
-
-  //     // rollback if error
-  //     setBatches((prev) =>
-  //       prev.map((b) =>
-  //         b._id === batches._id ? batches : b
-  //       )
-  //     );
-  //   }
-  // };
+ 
   const handleToggleStatus = async (batches) => {
     if (!batches || !batches._id) {
       console.error("Invalid batch", batches);
       return;
     }
 
-    // 🔥 Real-life toggle effect (optimistic UI)
+    //  Real-life toggle effect (optimistic UI)
     setBatches((prev) =>
       prev.map((b) =>
         b._id === batches._id

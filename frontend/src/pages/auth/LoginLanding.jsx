@@ -66,18 +66,7 @@ const LoginLandingPage = () => {
       </div>
     </div>
 </div>
-{/* 
-      <div className="hidden md:block bg-slate-50 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center text-sm">
-          <p className="text-blue-600 font-semibold tracking-wide">
-            AI for Everyone. Data for Everyone.
-          </p>
-          <div className="flex gap-6 text-gray-600">
-            <span className="flex items-center gap-2"><Phone size={14}/> +91-6355030012</span>
-            <span className="flex items-center gap-2"><Mail size={14}/> info@hilearnacademy.com</span>
-          </div>
-        </div>
-      </div> */}
+
 
       {/* --- MAIN NAVBAR --- */}
       <div className="mx-auto px-6 py-4 flex justify-between items-center">
@@ -454,58 +443,5 @@ const PricingCard = ({ title, price, features, popular = false }) => (
   </div>
 );
 
-// const PricingCard = ({ title, price, features, popular = false }) => (
-//   <div
-//     className={`
-//       relative bg-white text-gray-800 p-8 rounded-2xl
-//       transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl
-//       border border-gray-200
-//       hover:border-indigo-500
-//       group
-      
-//     `}
-//   >
-//     {/* Badge – shows on hover OR if popular */}
-//     <span
-//       className={`
-//         absolute -top-4 left-1/2 -translate-x-1/2
-//         px-4 py-1 rounded-full text-xs font-bold
-//         transition-all duration-300
-//         ${popular
-//           ? "bg-blue-600 text-white opacity-100"
-//           : "bg-blue-600 text-white opacity-0 group-hover:opacity-100"}
-//       `}
-//     >
-//       Most Popular
-//     </span>
-
-//     <h3 className="text-xl font-bold mb-2">{title}</h3>
-
-//     <div className="mb-6">
-//       <span className="text-4xl font-bold">${price}</span>
-//       <span className="text-gray-500">/month</span>
-//     </div>
-
-//     <button
-//       className={`
-//         w-full py-3 rounded-lg font-bold mb-8 transition-all duration-300
-//         ${popular
-//           ? "bg-gradient-to-r from-blue-600 to-indigo-500 text-white"
-//           : "border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"}
-//       `}
-//     >
-//       Start Free Trial
-//     </button>
-
-//     <ul className="space-y-4">
-//       {features.map((f, i) => (
-//         <li key={i} className="flex items-center gap-3 text-sm">
-//           <CheckCircle2 className="w-4 h-4 text-green-500" />
-//           {f}
-//         </li>
-//       ))}
-//     </ul>
-//   </div>
-// );
 
 export default LoginLandingPage;

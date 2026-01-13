@@ -2,21 +2,37 @@ const User = require("../models/User");
 const Course = require("../models/Course");
 const bcrypt = require("bcryptjs");
 
-/* GET all faculties */
+/**
+ * @desc    Get all faculties (mentors)
+ * @route   GET /api/admin/faculties
+ * @access  Private (Admin)
+ *
+ * Fetches all users whose role is set to "mentor"
+ */
 exports.getFaculties = async (req, res) => {
+    // Find all users having role "mentor"
   const faculties = await User.find({ role: "mentor" });
   res.json(faculties);
 };
 
-/* ADD faculty */
+/**
+ * @desc    Add a new faculty
+ * @route   POST /api/admin/faculties
+ * @access  Private (Admin)
+ *
+ * Creates a new faculty account with role "mentor"
+ * Password is securely hashed before saving
+ */
 exports.addFaculty = async (req, res) => {
   const { name, email, password, mobile } = req.body;
 
+  // Check if faculty already exists with same email
   const exists = await User.findOne({ email });
   if (exists) {
     return res.status(400).json({ message: "Faculty already exists" });
   }
 
+  // Hash the password before saving to database
   const hashed = await bcrypt.hash(password, 10);
 
   const faculty = await User.create({
@@ -30,8 +46,15 @@ exports.addFaculty = async (req, res) => {
   res.status(201).json(faculty);
 };
 
-/* UPDATE faculty */
+/**
+ * @desc    Update faculty details
+ * @route   PUT /api/admin/faculties/:id
+ * @access  Private (Admin)
+ *
+ * Updates faculty information based on faculty ID
+ */
 exports.updateFaculty = async (req, res) => {
+     // Find faculty by ID and update provided fields
   const faculty = await User.findByIdAndUpdate(
     req.params.id,
     req.body,
@@ -40,13 +63,25 @@ exports.updateFaculty = async (req, res) => {
   res.json(faculty);
 };
 
-/* DELETE faculty */
+/**
+ * @desc    Delete a faculty
+ * @route   DELETE /api/admin/faculties/:id
+ * @access  Private (Admin)
+ *
+ * Permanently removes faculty from database
+ */
 exports.deleteFaculty = async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   res.json({ message: "Faculty deleted" });
 };
 
-/* ASSIGN faculty to course */
+/**
+ * @desc    Assign faculty to a course
+ * @route   POST /api/admin/faculties/assign-course
+ * @access  Private (Admin)
+ *
+ * Assigns a faculty (mentor) to a specific course
+ */
 exports.assignFacultyToCourse = async (req, res) => {
   const { facultyId, courseId } = req.body;
 
@@ -57,7 +92,13 @@ exports.assignFacultyToCourse = async (req, res) => {
   res.json({ message: "Faculty assigned to course" });
 };
 
-
+/**
+ * @desc    Toggle faculty active/inactive status
+ * @route   PATCH /api/admin/faculties/:id/toggle-status
+ * @access  Private (Admin)
+ *
+ * Enables or disables faculty account by toggling isActive flag
+ */
 exports.toggleFacultyStatus = async (req, res) => {
   const faculty = await User.findById(req.params.id);
 

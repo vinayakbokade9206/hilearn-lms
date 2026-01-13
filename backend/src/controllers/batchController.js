@@ -1,13 +1,13 @@
 const Batch = require("../models/Batch");
 
-/* GET ALL BATCHES */
-// exports.getBatches = async (req, res) => {
-//   const batches = await Batch.find().populate("course", "title");
-//   res.json(batches);
-// };
+/**
+ * Get all batches
+ * @route GET /api/batches
+ * @access Public / Protected (as per middleware)
+ */
 exports.getBatches = async (req, res) => {
   const batches = await Batch.find()
-    .populate("course", "title"); // 🔥 IMPORTANT
+    .populate("course", "title"); //  IMPORTANT
 
   res.json({
     success: true,
@@ -15,11 +15,11 @@ exports.getBatches = async (req, res) => {
   });
 };
 
-/* CREATE BATCH */
-// exports.createBatch = async (req, res) => {
-//   const batch = await Batch.create(req.body);
-//   res.status(201).json(batch);
-// };
+/**
+ * Create a new batch
+ * @route POST /api/batches
+ * @access Protected
+ */
 exports.createBatch = async (req, res) => {
     console.log("Batch Model:", Batch);
   try {
@@ -31,7 +31,11 @@ exports.createBatch = async (req, res) => {
   }
 };
 
-/* UPDATE BATCH */
+/**
+ * Update batch details
+ * @route PUT /api/batches/:id
+ * @access Protected
+ */
 exports.updateBatch = async (req, res) => {
   const { name, course } = req.body;
 
@@ -47,26 +51,26 @@ exports.updateBatch = async (req, res) => {
   });
 };
 
-/* DELETE BATCH */
+/**
+ * Delete a batch
+ * @route DELETE /api/batches/:id
+ * @access Protected
+ */
 exports.deleteBatch = async (req, res) => {
   await Batch.findByIdAndDelete(req.params.id);
   res.json({ message: "Batch deleted" });
 };
 
-/* TOGGLE STATUS */
-// exports.toggleBatchStatus = async (req, res) => {
-//   const batch = await Batch.findById(req.params.id);
-//   batch.isActive = !batch.isActive;
-//   await batch.save();
-
-//   res.json({ isActive: batch.isActive });
-// };
-
+/**
+ * Toggle batch active/inactive status
+ * @route PATCH /api/batches/:id/toggle-status
+ * @access Protected
+ */
 exports.toggleBatchStatus = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // 🔥 SAFETY CHECK
+    // SAFETY CHECK
     if (!id) {
       return res.status(400).json({ message: "Batch ID is required" });
     }

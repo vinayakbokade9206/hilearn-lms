@@ -1,5 +1,10 @@
 const Material = require("../models/Material");
 
+/**
+ * Upload material for a lecture
+ * @route POST /api/materials/upload
+ * @access Protected
+ */
 exports.uploadMaterial = async (req, res) => {
   try {
     const { lectureId, type, title } = req.body;
@@ -17,6 +22,11 @@ exports.uploadMaterial = async (req, res) => {
   }
 };
 
+/**
+ * Get materials by lecture ID
+ * @route GET /api/materials/:lectureId
+ * @access Public / Protected (as per middleware)
+ */
 exports.getMaterialsByLecture = async (req, res) => {
   const materials = await Material.find({ lecture: req.params.lectureId });
   res.json({ success: true, materials });

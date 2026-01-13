@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useCountUp = (end, duration = 1000) => {
-  const safeEnd = Number(end) || 0;   // 🔥 MAIN FIX
+  const safeEnd = Number(end) || 0;   
   const [count, setCount] = useState(0);
 
   useEffect(() => {

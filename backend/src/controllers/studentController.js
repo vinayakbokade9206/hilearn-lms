@@ -1,256 +1,33 @@
-
-// const User = require("../models/User");
-// const Student = require("../models/Student.js");
-// const Attendance = require("../models/Attendance.js");
-// const QuizResult = require("../models/QuizResult.js");
-// const Course = require("../models/Course");
-// /* GET all students */
-// // exports.getStudents = async (req, res) => {
-// //   const students = await User.find().sort({ createdAt: -1 });
-// //   res.json(students);
-// // };
-
-// exports.getStudents = async (req, res) => {
-//   try {
-//     const students = await User.find({ role: "student" })
-//       .select("-password") // Isse password nahi dikhega
-//       .sort({ createdAt: -1 });
-//     res.json(students);
-//   } catch (error) {
-//     res.status(500).json({ message: "Error fetching students" });
-//   }
-// };
-
-// /* ADD student */
-// // exports.addStudent = async (req, res) => {
-// //   const { name, email, mobile } = req.body;
-
-// //   const exists = await User.findOne({ email });
-// //   if (exists) return res.status(400).json({ message: "Student already exists" });
-
-// //   const student = await User.create({ name, email, mobile });
-// //   res.status(201).json(student);
-// // };
-
-// exports.addStudent = async (req, res) => {
-//   const { name, email, mobile } = req.body;
-
-//   const exists = await User.findOne({ email });
-//   if (exists) {
-//     return res.status(400).json({ message: "Student already exists" });
-//   }
-
-//   const student = await User.create({
-//     name,
-//     email,
-//     mobile,
-//     role: "student",
-//     isActive: true,
-//   });
-
-//   res.status(201).json(student);
-// };
-
-// /* GET Student Details (View) - Yahan bhi password hide kiya */
-// exports.getStudentDetails = async (req, res) => {
-//   try {
-//     const student = await User.findById(req.params.id).select("-password");
-//     if (!student) return res.status(404).json({ message: "Not found" });
-    
-//     res.json({ success: true, student });
-//   } catch (error) {
-//     res.status(500).json({ success: false });
-//   }
-// };
-
-// /* GET Student By ID - Yahan bhi password hide kiya */
-// exports.getStudentById = async (req, res) => {
-//   try {
-//     const student = await User.findById(req.params.id).select("-password");
-//     res.status(200).json({ success: true, student });
-//   } catch (error) {
-//     res.status(500).json({ success: false });
-//   }
-// };
-
-// /* UPDATE student */
-// exports.updateStudent = async (req, res) => {
-//   const student = await User.findByIdAndUpdate(
-//     req.params.id,
-//     req.body,
-//     { new: true }
-//   );
-
-//   res.json(student);
-// };
-
-// exports.toggleStudentStatus = async (req, res) => {
-//   try {
-//     const student = await User.findById(req.params.id);
-
-//     if (!student) {
-//       return res.status(404).json({ message: "Student not found" });
-//     }
-
-//     student.isActive = !student.isActive;
-//     await student.save();
-
-//     res.json({
-//       message: "Status updated successfully",
-//       isActive: student.isActive,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Failed to update status" });
-//   }
-// };
-
-// exports.deleteStudent = async (req, res) => {
-//   try {
-//     const student = await User.findById(req.params.id);
-
-//     if (!student) {
-//       return res.status(404).json({ message: "Student not found" });
-//     }
-
-//     await student.deleteOne();
-
-//     res.json({ message: "Student deleted successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Failed to delete student" });
-//   }
-// };
-
-// /* 1️⃣ Student Basic Details */
-// // exports.getStudentDetails = async (req, res) => {
-// //   const student = await Student.findById(req.params.id)
-// //     .populate("course", "title")
-// //     .populate("batch", "name");
-
-// //   res.json({ success: true, student });
-// // };
-
-// /* 2️⃣ Attendance Report */
-// exports.getStudentAttendance = async (req, res) => {
-//   const attendance = await Attendance.find({
-//     student: req.params.id,
-//   }).populate("lecture", "title");
-
-//   const total = attendance.length;
-//   const present = attendance.filter(
-//     (a) => a.status === "present"
-//   ).length;
-
-//   res.json({
-//     totalLectures: total,
-//     attended: present,
-//     attendance,
-//   });
-// };
-
-// /* 3️⃣ Quiz Results */
-// exports.getStudentQuizzes = async (req, res) => {
-//   const quizzes = await QuizResult.find({
-//     student: req.params.id,
-//   });
-
-//   res.json(quizzes);
-// };
-
-
-
-// exports.seedStudents = async (req, res) => {
-//   try {
-//     const course = await Course.findOne();
-//     if (!course) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "No course found. Please add course first",
-//       });
-//     }
-
-//     const students = [
-//       {
-//         name: "Rahul Sharma",
-//         email: "rahul@gmail.com",
-//         phone: "9876543210",
-//         course: course._id,
-//         isActive: true,
-//       },
-//       {
-//         name: "Priya Patel",
-//         email: "priya@gmail.com",
-//         phone: "9123456780",
-//         course: course._id,
-//         isActive: true,
-//       },
-//       {
-//         name: "Amit Verma",
-//         email: "amit@gmail.com",
-//         phone: "9000011111",
-//         course: course._id,
-//         isActive: false,
-//       },
-//     ];
-
-//     await Student.insertMany(students);
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Sample students inserted successfully",
-//       count: students.length,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false });
-//   }
-// };
-
-// exports.getStudentById = async (req, res) => {
-//   try {
-//     const student = await Student.findById(req.params.id)
-//       .populate("course", "title");
-
-//     if (!student) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Student not found",
-//       });
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       student,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false });
-//   }
-// };
-
-
-
-
 const User = require("../models/User");
 const Student = require("../models/Student.js");
 const Attendance = require("../models/Attendance.js");
 const QuizResult = require("../models/QuizResult.js");
 const Course = require("../models/Course");
+const bcrypt = require("bcryptjs");
 
-/* GET all students - Password Hatane ke liye .select("-password") ka use kiya hai */
+
+/**
+ * Get all students
+ * @route GET /api/students
+ * @access Protected
+ */
 exports.getStudents = async (req, res) => {
   try {
+    // Fetch only users with role = student, exclude password field
     const students = await User.find({ role: "student" })
-      .select("-password") // Isse password nahi dikhega
-      .sort({ createdAt: -1 });
+      .select("-password") 
+      .sort({ createdAt: -1 });// Latest students first
     res.json(students);
   } catch (error) {
     res.status(500).json({ message: "Error fetching students" });
   }
 };
 
-/* ADD student */
+/**
+ * Add a new student
+ * @route POST /api/students
+ * @access Protected
+ */
 exports.addStudent = async (req, res) => {
   try {
     const { name, email, mobile, password } = req.body;
@@ -260,16 +37,18 @@ exports.addStudent = async (req, res) => {
       return res.status(400).json({ message: "Student already exists" });
     }
 
+    // 🔐 HASH PASSWORD
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const student = await User.create({
       name,
       email,
       mobile,
-      password, // User model mein agar bcrypt setup hai toh hash ho jayega
+      password: hashedPassword, // ✅ hashed
       role: "student",
       isActive: true,
     });
 
-    // Response bhejte waqt password delete kar rahe hain
     const studentObj = student.toObject();
     delete studentObj.password;
 
@@ -279,7 +58,11 @@ exports.addStudent = async (req, res) => {
   }
 };
 
-/* GET Student Details (View) - Yahan bhi password hide kiya */
+/**
+ * Get student details (view page)
+ * @route GET /api/students/:id/details
+ * @access Protected
+ */
 exports.getStudentDetails = async (req, res) => {
   try {
     const student = await User.findById(req.params.id).select("-password");
@@ -291,7 +74,11 @@ exports.getStudentDetails = async (req, res) => {
   }
 };
 
-/* GET Student By ID - Yahan bhi password hide kiya */
+/**
+ * Get student by ID
+ * @route GET /api/students/:id
+ * @access Protected
+ */
 exports.getStudentById = async (req, res) => {
   try {
     const student = await User.findById(req.params.id).select("-password");
@@ -301,11 +88,14 @@ exports.getStudentById = async (req, res) => {
   }
 };
 
-// ... Baaki ke functions (update, delete, toggle, reports) pehle wale hi rahenge
-// Bas dhyaan rakhein ki update mein bhi password field ko carefuly handle karein.
 
+/**
+ * Update student details
+ * @route PUT /api/students/:id
+ * @access Protected
+ */
 exports.updateStudent = async (req, res) => {
-  // Agar password update nahi karna toh body se delete kar dein
+  
   if (!req.body.password) {
     delete req.body.password;
   }
@@ -319,7 +109,11 @@ exports.updateStudent = async (req, res) => {
   res.json(student);
 };
 
-// Toggle, Delete, Reports functions ko pehle ki tarah hi rehne dein.
+/**
+ * Toggle student active/inactive status
+ * @route PATCH /api/students/:id/toggle-status
+ * @access Protected
+ */
 exports.toggleStudentStatus = async (req, res) => {
   try {
     const student = await User.findById(req.params.id);
@@ -332,6 +126,11 @@ exports.toggleStudentStatus = async (req, res) => {
   }
 };
 
+/**
+ * Delete a student
+ * @route DELETE /api/students/:id
+ * @access Protected
+ */
 exports.deleteStudent = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
@@ -341,16 +140,33 @@ exports.deleteStudent = async (req, res) => {
   }
 };
 
+
+/**
+ * Get student attendance
+ * @route GET /api/students/:id/attendance
+ * @access Protected
+ */
 exports.getStudentAttendance = async (req, res) => {
   const attendance = await Attendance.find({ student: req.params.id }).populate("lecture", "title");
   res.json({ totalLectures: attendance.length, attendance });
 };
 
+
+/**
+ * Get student quiz results
+ * @route GET /api/students/:id/quizzes
+ * @access Protected
+ */
 exports.getStudentQuizzes = async (req, res) => {
   const quizzes = await QuizResult.find({ student: req.params.id });
   res.json(quizzes);
 };
 
+/**
+ * Seed sample students (for testing/demo)
+ * @route POST /api/students/seed
+ * @access Protected / Dev only
+ */
 exports.seedStudents = async (req, res) => {
   try {
     const students = [

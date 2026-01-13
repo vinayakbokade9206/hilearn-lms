@@ -5,7 +5,13 @@ const crypto = require("crypto");
 
 
 const sendEmail = require("../utils/sendEmail");
-// helper
+
+
+/**
+ * Generates JWT token for authenticated user
+ * @param {Object} user - User document from database
+ * @returns {string} JWT token
+ */
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, role: user.role },
@@ -14,7 +20,11 @@ const generateToken = (user) => {
   );
 };
 
-// REGISTER
+/**
+ * Register a new user
+ * @route POST /api/auth/register
+ * @access Public
+ */
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -47,7 +57,11 @@ exports.register = async (req, res) => {
   }
 };
 
-// LOGIN
+/**
+ * Login existing user
+ * @route POST /api/auth/login
+ * @access Public
+ */
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -56,6 +70,7 @@ exports.login = async (req, res) => {
     if (!user)
       return res.status(401).json({ message: "Invalid credentials" });
 
+    // Compare entered password with stored hash
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
@@ -75,6 +90,11 @@ exports.login = async (req, res) => {
   }
 };
 
+/**
+ * Generate reset password token
+ * @route POST /api/auth/forgot-password
+ * @access Public
+ */
 exports.forgotPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -89,6 +109,7 @@ exports.forgotPassword = async (req, res) => {
       .update(resetToken)
       .digest("hex");
 
+    // Token expiry time (15 minutes)
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
     await user.save();
@@ -103,13 +124,20 @@ exports.forgotPassword = async (req, res) => {
 };
 
 
+/**
+ * Reset password using token
+ * @route POST /api/auth/reset-password/:token
+ * @access Public
+ */
 exports.resetPassword = async (req, res) => {
   try {
+    // Hash received token
     const hashedToken = crypto
       .createHash("sha256")
       .update(req.params.token)
       .digest("hex");
 
+    // Find valid user with non-expired token
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
       resetPasswordExpire: { $gt: Date.now() },
@@ -136,7 +164,11 @@ exports.resetPassword = async (req, res) => {
 
 
 
-
+/**
+ * Send OTP to user's email for password reset
+ * @route POST /api/auth/send-otp
+ * @access Public
+ */
 exports.sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -145,6 +177,7 @@ exports.sendOtp = async (req, res) => {
     if (!user)
       return res.status(404).json({ message: "User not found" });
 
+    // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     user.otp = otp;
@@ -164,7 +197,11 @@ exports.sendOtp = async (req, res) => {
   }
 };
 
-// VERIFY OTP & RESET
+/**
+ * Verify OTP and reset password
+ * @route POST /api/auth/verify-otp
+ * @access Public
+ */
 exports.verifyOtpAndReset = async (req, res) => {
   try {
     const { email, otp, newPassword } = req.body;

@@ -1,16 +1,3 @@
-// import React from "react";
-// import ForgotPasswordForm from "../../component/auth/ForogotPasswordForm";
-
-// const ForgotPasswordPage = () => {
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-slate-100">
-//       <ForgotPasswordForm/>
-//     </div>
-//   );
-// };
-
-// export default ForgotPasswordPage;
-
 import { useState } from "react";
 import { sendOtp } from "../../services/authService";
 import { useNavigate } from "react-router-dom";

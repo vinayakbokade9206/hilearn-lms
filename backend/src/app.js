@@ -1,19 +1,3 @@
-// const express = require("express");
-// const cors = require("cors");
-// const courseRoutes = require("./routes/courseRoutes");
-
-// const app = express();
-
-// app.use(cors());
-// app.use(express.json());
-
-// app.use("/api/auth", require("./routes/authRoutes"));
-// app.use("/api/admin", require("./routes/adminRoutes.js"));
-// app.use("/api/courses", courseRoutes);
-
-// module.exports = app;
-
-
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -59,8 +43,7 @@ app.use("/api/students", require("./routes/studentRoutes"));
 
 
 app.use("/api/admin", require("./routes/adminFacultyRoutes"));
-// app.use("/uploads", express.static("uploads"));
-// app.use("/api/materials", materialRoutes);
+
 
 app.use("/api/materials", materialRoutes);
 app.use("/uploads", express.static("uploads"));
