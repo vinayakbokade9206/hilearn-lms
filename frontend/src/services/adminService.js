@@ -41,3 +41,31 @@ export const getAdminProfile = async () => {
   const response = await api.get("/admin/profile");
   return response.data;
 }
+
+
+/* ===================== FACULTIES ===================== */
+
+// Get all faculties (mentors)
+export const getFaculties = () =>
+  api.get("/admin/faculties");
+
+// Add new faculty
+export const addFaculty = (data) =>
+  api.post("/admin/faculties", data);
+
+// Update faculty
+export const updateFaculty = (id, data) =>
+  api.put(`/admin/faculties/${id}`, data);
+
+// Delete faculty
+export const deleteFaculty = (id) =>
+  api.delete(`/admin/faculties/${id}`);
+
+export const toggleFacultyStatus = (id) =>
+  api.patch(`/admin/faculties/${id}/status`);
+
+// Assign faculty to course
+export const assignFacultyToCourse = (data) =>
+  api.post("/admin/faculties/assign-course", data);
+
+

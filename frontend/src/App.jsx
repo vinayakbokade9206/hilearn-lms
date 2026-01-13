@@ -113,7 +113,7 @@
 // export default App;
 
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
@@ -131,7 +131,7 @@ import AdminLayout from "./pages/dashboard/admin/AdminLayout";
 
 // Admin Pages
 import StudentList from "./pages/dashboard/admin/students/StudentList";
-import AddEditStudent from "./pages/dashboard/admin/students/AddEditStudent";
+// import AddEditStudent from "./pages/dashboard/admin/students/AddEditStudent";
 
 import CourseList from "./pages/dashboard/admin/courses/CourseList";
 import AddEditCourses from "./pages/dashboard/admin/courses/AddEditCourse";
@@ -139,11 +139,12 @@ import AddEditCourses from "./pages/dashboard/admin/courses/AddEditCourse";
 import LectureList from "./pages/dashboard/admin/lectures/LectureList";
 import BatchList from "./pages/dashboard/admin/batches/BatchList";
 import AddEditStudent from "./pages/dashboard/admin/students/AddEditStudent";
-import CourseList from "./pages/dashboard/admin/courses/CourseList";
+// import CourseList from "./pages/dashboard/admin/courses/CourseList";
 import StudentDetails from "./pages/dashboard/admin/students/StudentDetails";
 
 // New Material Management Pages
 import LectureMaterialList from "./pages/dashboard/admin/materials/LectureMaterialList";
+import FacultyList from "./pages/dashboard/admin/FacultyList";
 
 function App() {
   return (
@@ -163,19 +164,21 @@ function App() {
 
         {/* Admin Dashboard with Nested Routes */}
         <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="students" element={<StudentList />} />
             <Route path="students/add" element={<AddEditStudent />} />
             <Route path="students/edit/:id" element={<AddEditStudent />} />
             <Route path="/admin/students/:id" element={<StudentDetails />} />
+            <Route path="faculties" element={<FacultyList />} />
             <Route path="courses" element={<CourseList />} />
             <Route path="lectures" element={<LectureList />} />
             <Route path="batches" element={<BatchList />} />
           <Route path="students" element={<StudentList />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
 
           {/* Student Management */}
           <Route path="students" element={<StudentList />} />
-          <Route path="students/add" element={<AddEditStudent />} />
+          {/* <Route path="students/add" element={<AddEditStudent />} /> */}
           <Route path="students/edit/:id" element={<AddEditStudent />} />
 
           {/* Course Management */}

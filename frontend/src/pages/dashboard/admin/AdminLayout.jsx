@@ -7,6 +7,7 @@ import {
   Video,
   Layers,
   LogOut,
+  GraduationCap,
 } from "lucide-react";
 import { getAdminProfile } from "../../../services/adminService";
 
@@ -26,6 +27,11 @@ const AdminLayout = () => {
       name: "Students",
       path: "/admin/students",
       icon: <Users size={20} />,
+    },
+    {
+      name: "Faculties",
+      path: "/admin/faculties",
+      icon: <GraduationCap size={20} />,
     },
     {
       name: "Courses",

@@ -56,6 +56,9 @@ app.use("/api/lectures", require("./routes/lectureRoutes.js"));
 app.use("/api/materials", require("./routes/materialRoutes"));
 app.use("/api/students", require("./routes/studentRoutes"));
 
+
+
+app.use("/api/admin", require("./routes/adminFacultyRoutes"));
 // app.use("/uploads", express.static("uploads"));
 // app.use("/api/materials", materialRoutes);
 
