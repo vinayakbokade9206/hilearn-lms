@@ -2,25 +2,29 @@
 const mongoose = require("mongoose");
 
 const lectureSchema = new mongoose.Schema({
-    title: { 
-        type: String, required: true, 
-        trim: true 
+    title: {
+        type: String, required: true,
+        trim: true
     },
-    description: { 
-        type: String, 
-        default: "" 
+    description: {
+        type: String,
+        default: ""
     },
-    course: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Course", required: true 
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course", required: true
     },
-    duration: { 
-        type: String, 
-        default: "0" 
+    duration: {
+        type: String,
+        default: "0"
     }, // e.g., "15:00"
-    videoUrl: { 
-        type: String, default: "" 
+    videoUrl: {
+        type: String, default: ""
     }, // Trending: Video support
+    pdfUrl: {
+        type: String,
+        default: ""
+    },
     lectureType: {
         type: String,
         enum: ["video", "article", "quiz"],
@@ -30,9 +34,9 @@ const lectureSchema = new mongoose.Schema({
         { type: mongoose.Schema.Types.ObjectId, ref: "Material" }
     ],
 
-    isPreviewFree: { 
-        type: Boolean, 
-        default: false 
+    isPreviewFree: {
+        type: Boolean,
+        default: false
     } // Trending: Free preview option
 }, { timestamps: true });
 

@@ -22,7 +22,7 @@ exports.createCourse = async (req, res) => {
 exports.getCourses = async (req, res) => {
   try {
     const courses = await Course.find({});
-    console.log("Database se mila data:", courses); 
+    // console.log("Database se mila data:", courses); 
     
     res.status(200).json({
       success: true,
