@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Course = require("./models/Course"); // Ensure path is correct
 const courseRoutes = require("./routes/courseRoutes");
 const materialRoutes = require("./routes/materialRoutes");
+const attendanceRoutes = require("./routes/attendanceRoutes");
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/admin", require("./routes/adminFacultyRoutes"));
 
 app.use("/api/materials", materialRoutes);
 app.use("/uploads", express.static("uploads"));
+app.use("/api/attendance", attendanceRoutes);
 
 
 app.use("/api/subscriptions", require("./routes/subscriptionRoutes"));
