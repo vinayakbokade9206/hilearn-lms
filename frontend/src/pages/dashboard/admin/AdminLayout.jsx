@@ -48,6 +48,11 @@ const AdminLayout = () => {
       path: "/admin/batches",
       icon: <Layers size={20} />,
     },
+    {
+      name: "Subscriptions",
+      path: "/admin/subscriptions",
+      icon: <Layers size={20} />,
+    },
   ];
 
   useEffect(() => {

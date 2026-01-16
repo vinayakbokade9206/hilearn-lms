@@ -7,17 +7,24 @@ import {
   CheckCircle2, Menu, X, Phone, Mail, GraduationCap
 } from "lucide-react";
 
+
 const LoginLandingPage = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const menuItems = [
-    "Home",
-    "Market Integrations",
-    "Pricing",
-    "Testimonials",
-    "Contact",
-    "Help"
+    // "Home",
+    // "Market Integrations",
+    // "Pricing",
+    // "Testimonials",
+    // "Contact",
+    // "Subscription"
+    { name: "Home", path: "/" },
+    { name: "Market Integrations", path: "/integrations" }, // Aapka desired path
+    { name: "Pricing", path: "/pricing" },
+    { name: "Testimonials", path: "/testimonials" },
+    { name: "Contact", path: "/contact" },
+    { name: "Subscription", path: "/subscribe" }
   ];
 
   const Counter = ({ end, suffix = "" }) => {
@@ -89,9 +96,10 @@ const LoginLandingPage = () => {
           {menuItems.map((item, idx) => (
             <span
               key={idx}
+              onClick={() => navigate(item.path)}
               className="text-sm font-semibold text-slate-600 hover:text-blue-600 cursor-pointer transition-all relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-blue-600 hover:after:w-full after:transition-all"
             >
-              {item}
+              {item.name}
             </span>
           ))}
         </nav>

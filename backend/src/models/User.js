@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema(
   mobile: {
   type: String,
 },
+enrolledCourses: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Course",
+  },
+],
   },
   
   { timestamps: true }

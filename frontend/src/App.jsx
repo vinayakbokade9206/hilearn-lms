@@ -30,6 +30,8 @@ import StudentDetails from "./pages/dashboard/admin/students/StudentDetails";
 // New Material Management Pages
 import LectureMaterialList from "./pages/dashboard/admin/materials/LectureMaterialList";
 import FacultyList from "./pages/dashboard/admin/FacultyList";
+import Subscription from "./pages/dashboard/Subscription";
+import AdminSubscriptionPlans from "./pages/dashboard/admin/AdminSubscriptionPlans";
 
 function App() {
   return (
@@ -42,6 +44,11 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+        {/* SUBSCRIPTION PAGE */}
+        <Route
+          path="/subscribe"
+          element={<Subscription />}
+        />
 
         {/* Dashboards */}
         <Route path="/student" element={<StudentDashboard />} />
@@ -60,6 +67,7 @@ function App() {
             <Route path="lectures" element={<LectureList />} />
             <Route path="batches" element={<BatchList />} />
           <Route path="students" element={<StudentList />} />
+          <Route path="subscriptions" element={<AdminSubscriptionPlans />} />
 
           {/* Student Management */}
           <Route path="students" element={<StudentList />} />
