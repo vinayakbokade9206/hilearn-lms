@@ -14,12 +14,12 @@ const courseSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, "Category is required"],
-      // LMS Professionalism: Enum ensure karta hai ki data categories ke bahar na jaye
+      
       enum: {
         values: ["frontend", "backend", "database", "fullstack", "general"],
         message: '{VALUE} is not a valid category'
       },
-      lowercase: true, // DB me hamesha choti ABC me save hoga (best for filtering)
+      lowercase: true, 
       trim: true,
       default: "general",
     },
@@ -41,7 +41,7 @@ const courseSchema = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
-    // Professional Tip: In fields ka use karke aap course ke andar total content count dikha sakte hain
+    
     lectures: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lecture" }],
     batches: [{ type: mongoose.Schema.Types.ObjectId, ref: "Batch" }],
   },

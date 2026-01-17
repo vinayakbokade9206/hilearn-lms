@@ -21,64 +21,7 @@ const Subscription = () => {
     }
   };
 
-  // const handleSubscribe = async (plan) => {
-  //   try {
-  //     const { data } = await createPaymentOrder({ planId: plan._id, 
-  //     amount: plan.price });
 
-  //     const options = {
-  //       key: import.meta.env.VITE_RAZORPAY_KEY,
-  //       amount: data.amount,
-  //       currency: "INR",
-  //       order_id: data.orderId,
-  //       name: "LMS Subscription",
-  //       description: plan.title,
-  //       handler: async (response) => {
-  //         await paymentSuccess({
-  //           orderId: data.orderId,
-  //           paymentId: response.razorpay_payment_id,
-  //           planId: plan._id,
-  //         });
-
-  //         alert("Subscription activated 🎉");
-  //       },
-  //     };
-
-  //     const rzp = new window.Razorpay(options);
-  //     rzp.open();
-  //   } catch (err) {
-  //     alert("Payment failed");
-  //   }
-  // };
-// const handleSubscribe = async (plan) => {
-//   try {
-//     // 1. Backend par order create karne ki request bhein
-//     const res = await createPaymentOrder({ 
-//       planId: plan._id, 
-//       amount: plan.price 
-//     });
-
-//     const data = res.data;
-
-//     if (data.success) {
-//       // 2. Razorpay popup ke bajaye seedha Success API ko call karein
-//       // Hum maan rahe hain ki payment "Success" ho gayi
-//       const successRes = await paymentSuccess({
-//         orderId: data.orderId,
-//         paymentId: "PAYID_DUMMY_" + Date.now(), // Nakli Payment ID
-//         courseId: plan._id, // Aapka backend 'courseId' mang raha hai paymentSuccess mein
-//         amount: plan.price
-//       });
-
-//       if (successRes.data.success) {
-//         alert("Subscription Activated Successfully! 🎉 (Dummy Mode)");
-//       }
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     alert("Process failed. Check if you are logged in.");
-//   }
-// };
 
 const handleSubscribe = async (plan) => {
   try {
