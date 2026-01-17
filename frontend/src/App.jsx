@@ -264,7 +264,7 @@ function App() {
             <Route path="profile" element={<ProfilePage />} />
             <Route path="quizzes" element={<QuizzesPage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
-            <Route path="lectures" element={<MyLectures />} />
+            {/* <Route path="my-lectures" element={<MyLectures />} /> */}
         </Route>
 
         {/* --- MENTOR PANEL ROUTES (NEW) --- */}
