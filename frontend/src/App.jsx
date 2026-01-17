@@ -214,6 +214,7 @@ import ProfilePage from "./pages/dashboard/student/ProfilePage";
 import QuizzesPage from "./pages/dashboard/student/QuizzesPage";
 import LeaderboardPage from "./pages/dashboard/student/LeaderboardPage";
 import MyLectures from "./pages/dashboard/student/MyLectures";
+import Schedule from "./pages/dashboard/student/Schedule";
 
 // Admin Pages
 import StudentList from "./pages/dashboard/admin/students/StudentList";
@@ -265,6 +266,8 @@ function App() {
             <Route path="quizzes" element={<QuizzesPage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             {/* <Route path="my-lectures" element={<MyLectures />} /> */}
+            <Route path="lectures" element={<MyLectures />} />
+            <Route path="schedule" element={<Schedule />} />
         </Route>
 
         {/* --- MENTOR PANEL ROUTES (NEW) --- */}

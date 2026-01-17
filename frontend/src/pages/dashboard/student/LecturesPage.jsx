@@ -147,23 +147,25 @@ const LecturesPage = () => {
     const fetchLectures = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(
-          "http://localhost:5000/api/students/lectures",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axios.get("http://localhost:5000/api/students/lectures", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        // Sorting Newest First (Descending)
+        // const sorted = (res.data.lectures || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        // setLectures(sorted);
+        const allLectures = res.data.lectures || [];
 
-        const sorted = (res.data.lectures || []).sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
+        // --- FIXED LOGIC: Strict Filtering & Sorting ---
+        // 1. Sirf 'video' type wale lectures filter karein (Live meetings hide ho jayengi)
+        // 2. Newest first (Descending order) sort karein
+        const videoOnly = allLectures
+          .filter(l => l.lectureType === 'video')
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        setLectures(sorted);
-      } catch (err) {
-        console.error("Error fetching lectures", err);
-      } finally {
-        setLoading(false);
-      }
+        setLectures(videoOnly);
+      } catch (err) { console.error("Error", err); }
+      finally { setLoading(false); }
+        
     };
 
     fetchLectures();

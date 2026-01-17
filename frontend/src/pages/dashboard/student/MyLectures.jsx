@@ -179,6 +179,23 @@
 // //     alert("Error: Is lecture ka Video Link database mein nahi mila!");
 // //   }
 // // };
+//   const getEmbedUrl = (url) => {
+//     if (!url || url.trim() === "") return null;
+//     let videoId = "";
+//     if (url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
+//     else if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1];
+//     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+//   };
+
+//   const handleWatchNow = (url) => {
+//     const embedUrl = getEmbedUrl(url);
+//     if (embedUrl) {
+//       setSelectedVideo(embedUrl);
+//     } else {
+//       // Agar ye alert aata hai, toh matlab Database mein link nahi hai
+//       alert("Error: Is lecture ka Video Link database mein nahi mila! Admin se kahein ki link update karein.");
+//     }
+//   };
 
 //   return (
 //     <div className="p-6">
@@ -193,6 +210,7 @@
 //             <div className="flex gap-2">
 //               <button 
 //                 onClick={() => {handleWatchNow(lecture.videoUrl); console.log(lecture.videoUrl)}}
+//                 onClick={() => handleWatchNow(lecture.videoUrl)}
 //                 className="flex-1 bg-blue-600 text-white font-bold py-3 rounded-xl"
 //               >
 //                 WATCH NOW
@@ -701,39 +719,61 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { X } from "lucide-react";
+
+
+import React, { useState, useEffect } from "react";
+import { Play, Download, Search, Loader2, VideoOff, X } from "lucide-react";
 
 const MyLectures = () => {
   console.log("MyLectures component rendered");
   const [lectures, setLectures] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // 🔹 Fetch lectures
   useEffect(() => {
-    const fetchLectures = async () => {
+    const fetchVideos = async () => {
       try {
-        const token = localStorage.getItem("token");
+    //     const token = localStorage.getItem("token");
 
-        const res = await axios.get(
-          "http://localhost:5000/api/students/lectures",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+    //     const res = await axios.get(
+    //       "http://localhost:5000/api/students/lectures",
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }
+    //     );
 
-        console.log("LECTURES API RESPONSE:", res.data);
+    //     console.log("LECTURES API RESPONSE:", res.data);
 
-        if (res.data.success) {
-          setLectures(res.data.lectures);
-        }
-      } catch (error) {
-        console.error("LECTURES API ERROR:", error);
+    //     if (res.data.success) {
+    //       setLectures(res.data.lectures);
+    //     }
+    //   } catch (error) {
+    //     console.error("LECTURES API ERROR:", error);
+    //   }
+    // };
+
+    // fetchLectures();
+    setLoading(true);
+         {/* API se saara data mangwaya */}
+        const res = await axios.get("http://localhost:5000/api/lectures");
+        
+         {/* --- FIXED LOGIC: Sirf 'video' type ko filter kiya --- */}
+         {/* Isse Live meetings (Schedule wali) yahan nahi dikhengi */}
+        const allData = res.data.lectures || [];
+        const videoOnly = allData.filter(l => l.lectureType === 'video');
+        
+        setLectures(videoOnly);
+      } catch (err) {
+        console.error("Fetch Error:", err);
+      } finally {
+        setLoading(false);
       }
     };
-
-    fetchLectures();
+    fetchVideos();
   }, []);
 
   // 🔹 VERY SIMPLE watch handler
@@ -758,6 +798,18 @@ const MyLectures = () => {
     console.log("EMBED URL:", embedUrl);
     setSelectedVideo(embedUrl);
   };
+
+  // Search filter
+  const filteredLectures = lectures.filter(l => 
+    l.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center h-64">
+      <Loader2 className="animate-spin text-blue-600 mb-2" size={30} />
+      <p className="text-slate-400 font-bold text-sm">Loading recordings...</p>
+    </div>
+  );
 
   return (
     <div className="p-6">
@@ -805,9 +857,10 @@ const MyLectures = () => {
               title="Lecture Video"
             />
           </div>
-        </div>
-      )}
+        
     </div>
+      )}
+  </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Save, Users, AlertCircle, RefreshCw } from "lucide-react";
+import { Save, Users, RefreshCw } from "lucide-react";
 
 const ManageAttendance = () => {
   const [students, setStudents] = useState([]);
@@ -41,7 +41,6 @@ const ManageAttendance = () => {
     fetchData();
   }, []);
 
-  // Status ko exact lowercase mein set kar rahe hain
   const handleStatusChange = (studentId, status) => {
     setAttendance(prev => ({ ...prev, [studentId]: status.toLowerCase() }));
   };
@@ -54,7 +53,6 @@ const ManageAttendance = () => {
       const token = localStorage.getItem("token");
       const attendanceData = students.map(s => ({
         studentId: s._id,
-        // Yahan strictly lowercase "present" ya "absent" bhej rahe hain
         status: attendance[s._id] ? attendance[s._id].toLowerCase() : "absent"
       }));
 
@@ -64,6 +62,12 @@ const ManageAttendance = () => {
       }, { headers: { Authorization: `Bearer ${token}` } });
       
       alert("Attendance saved successfully! ✅");
+
+      // Reset states
+      setAttendance({});
+      setSelectedLecture("");
+      fetchData();
+
     } catch (err) {
       console.error("Save Error:", err.response?.data);
       alert(`Error: ${err.response?.data?.message || "Attendance save nahi ho saki."}`);
@@ -73,66 +77,107 @@ const ManageAttendance = () => {
   };
 
   return (
-    <div className="p-8 bg-white rounded-[32px] shadow-sm border border-slate-100">
-      <div className="flex justify-between items-center mb-10">
-        <div>
-          <h2 className="text-2xl font-black text-slate-800 flex items-center gap-3">
-            <Users className="text-sky-600" size={28} /> Manage Attendance
-          </h2>
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Daily Records</p>
-        </div>
-        <div className="flex gap-3">
-            <button onClick={fetchData} className="p-3 bg-slate-50 text-slate-400 hover:text-sky-600 rounded-2xl transition-all border border-slate-100">
-                <RefreshCw size={20} className={fetching ? "animate-spin" : ""} />
+    <div className="p-6 bg-white min-h-screen">
+      {/* Page Heading */}
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold text-[#3b82f6] mb-1">Manage Attendance</h2>
+        <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Daily Records</p>
+      </div>
+
+      {/* Control Header Card (Only Lecture Selection) */}
+      <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-8">
+        <div className="flex flex-col md:flex-row items-end gap-4">
+          <div className="flex-1 w-full">
+            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Select Active Session</label>
+            <select 
+              className="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none"
+              value={selectedLecture}
+              onChange={(e) => setSelectedLecture(e.target.value)}
+            >
+              <option value="">-- Choose a Lecture --</option>
+              {lectures.map((l) => (
+                <option key={l._id} value={l._id}>{l.title}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex gap-2 w-full md:w-auto">
+            <button 
+                onClick={fetchData} 
+                className="p-3 bg-white border border-slate-300 text-slate-500 hover:text-blue-600 rounded-lg transition-all"
+            >
+                <RefreshCw size={18} className={fetching ? "animate-spin" : ""} />
             </button>
             <button 
               onClick={saveAttendance} 
               disabled={loading || !selectedLecture || students.length === 0}
-              className={`px-8 py-3 rounded-2xl flex items-center gap-2 font-black text-[10px] uppercase tracking-widest transition-all ${
-                !selectedLecture ? "bg-slate-100 text-slate-300 cursor-not-allowed" : "bg-sky-600 text-white hover:bg-sky-700 shadow-xl shadow-sky-100"
+              className={`flex-1 px-8 py-2.5 rounded-lg flex items-center justify-center gap-2 font-bold text-sm transition-all ${
+                !selectedLecture ? "bg-slate-200 text-slate-400 cursor-not-allowed" : "bg-[#3b82f6] text-white hover:bg-blue-700 shadow-lg shadow-blue-100"
               }`}
             >
-              <Save size={18} /> {loading ? "Processing..." : "Submit Records"}
+              <Save size={18} /> {loading ? "Saving..." : "Submit Records"}
             </button>
+          </div>
         </div>
       </div>
 
-      <div className="mb-8">
-        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block">Select Active Session</label>
-        <select 
-          className="w-full p-5 rounded-2xl bg-slate-50 border border-slate-100 outline-none font-bold text-sm text-slate-700"
-          value={selectedLecture}
-          onChange={(e) => setSelectedLecture(e.target.value)}
-        >
-          <option value="">-- Choose a Lecture --</option>
-          {lectures.map((l) => (
-            <option key={l._id} value={l._id}>{l.title}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className={`space-y-4 ${!selectedLecture ? "opacity-20 pointer-events-none" : "opacity-100"}`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {students.map(student => (
-              <div key={student._id} className="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-100 hover:border-sky-200 transition-all shadow-sm">
-                <span className="font-bold text-slate-800">{student.name}</span>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => handleStatusChange(student._id, "present")}
-                    className={`px-5 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all ${attendance[student._id] === "present" ? "bg-emerald-500 text-white" : "bg-slate-50 text-slate-400"}`}
-                  >
-                    PRESENT
-                  </button>
-                  <button 
-                    onClick={() => handleStatusChange(student._id, "absent")}
-                    className={`px-5 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all ${attendance[student._id] === "absent" ? "bg-red-500 text-white" : "bg-slate-50 text-slate-400"}`}
-                  >
-                    ABSENT
-                  </button>
-                </div>
-              </div>
-            ))}
-        </div>
+      {/* Attendance Table */}
+      <div className={`overflow-hidden rounded-xl border border-slate-200 shadow-sm ${!selectedLecture ? "opacity-40 grayscale pointer-events-none" : "opacity-100"}`}>
+        <table className="w-full text-left border-collapse">
+          <thead className="bg-[#3b82f6] text-white">
+            <tr>
+              <th className="px-6 py-4 font-bold text-sm uppercase tracking-wider">Student Name</th>
+              <th className="px-6 py-4 font-bold text-sm uppercase tracking-wider text-center">Current Status</th>
+              <th className="px-6 py-4 font-bold text-sm uppercase tracking-wider text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-slate-100">
+            {students.length > 0 ? (
+              students.map((student) => (
+                <tr key={student._id} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-6 py-4 text-slate-700 font-semibold capitalize">{student.name}</td>
+                  <td className="px-6 py-4 text-center">
+                    <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase ${
+                      attendance[student._id] === "present" ? "bg-emerald-100 text-emerald-600" : 
+                      attendance[student._id] === "absent" ? "bg-red-100 text-red-600" : "bg-slate-100 text-slate-400"
+                    }`}>
+                      {attendance[student._id] || "pending"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex justify-end gap-2">
+                      <button 
+                        onClick={() => handleStatusChange(student._id, "present")}
+                        className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all border ${
+                          attendance[student._id] === "present" 
+                          ? "bg-emerald-500 text-white border-emerald-500 shadow-md" 
+                          : "bg-white text-slate-400 border-slate-200 hover:border-emerald-500 hover:text-emerald-500"
+                        }`}
+                      >
+                        PRESENT
+                      </button>
+                      <button 
+                        onClick={() => handleStatusChange(student._id, "absent")}
+                        className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all border ${
+                          attendance[student._id] === "absent" 
+                          ? "bg-red-500 text-white border-red-500 shadow-md" 
+                          : "bg-white text-slate-400 border-slate-200 hover:border-red-500 hover:text-red-500"
+                        }`}
+                      >
+                        ABSENT
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="px-6 py-10 text-center text-slate-400 font-medium">
+                  No students available for attendance.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
