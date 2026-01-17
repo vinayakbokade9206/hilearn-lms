@@ -46,10 +46,11 @@ const StudentLayout = () => {
             active={location.pathname.includes("quizzes")}
             onClick={() => navigate("/student/quizzes")} 
           />
-          <SidebarNavItem 
-            icon={<Calendar size={19} />} 
-            label="Schedule" 
+           <SidebarNavItem 
+            icon={<User size={19} />} 
+            label="schedule" 
             active={location.pathname.includes("schedule")}
+            onClick={() => navigate("/student/schedule")} 
           />
           {/* NAYA: Profile Section */}
           <SidebarNavItem 
@@ -58,6 +59,7 @@ const StudentLayout = () => {
             active={location.pathname.includes("profile")}
             onClick={() => navigate("/student/profile")} 
           />
+          
         </nav>
 
         {/* Logout at bottom */}

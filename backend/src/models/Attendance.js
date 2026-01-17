@@ -17,6 +17,7 @@ const attendanceSchema = new mongoose.Schema(
       enum: ["present", "absent"], // Strictly lowercase jaisa validation error ne manga
       required: true,
     },
+   
   },
   { timestamps: true }
 );

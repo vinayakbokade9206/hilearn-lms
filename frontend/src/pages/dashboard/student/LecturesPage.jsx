@@ -79,8 +79,18 @@ const LecturesPage = () => {
           headers: { Authorization: `Bearer ${token}` }
         });
         // Sorting Newest First (Descending)
-        const sorted = (res.data.lectures || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setLectures(sorted);
+        // const sorted = (res.data.lectures || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        // setLectures(sorted);
+        const allLectures = res.data.lectures || [];
+
+        // --- FIXED LOGIC: Strict Filtering & Sorting ---
+        // 1. Sirf 'video' type wale lectures filter karein (Live meetings hide ho jayengi)
+        // 2. Newest first (Descending order) sort karein
+        const videoOnly = allLectures
+          .filter(l => l.lectureType === 'video')
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        setLectures(videoOnly);
       } catch (err) { console.error("Error", err); }
       finally { setLoading(false); }
     };
