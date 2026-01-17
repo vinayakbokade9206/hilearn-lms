@@ -717,11 +717,11 @@
 
 
 
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 
-import React, { useState, useEffect } from "react";
+import  { React,useState, useEffect } from "react";
 import { Play, Download, Search, Loader2, VideoOff, X } from "lucide-react";
 
 const MyLectures = () => {
